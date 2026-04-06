@@ -57,10 +57,13 @@ export default function decorate(block) {
   let autoplayTimer;
 
   function goToSlide(idx) {
-    slides[currentSlide].classList.remove('active');
     wrapper.querySelectorAll('.hero-showcase-dot')[currentSlide]?.classList.remove('active');
     currentSlide = idx;
-    slides[currentSlide].classList.add('active');
+    // Scroll horizontally to the target slide
+    slidesContainer.scrollTo({
+      left: slides[currentSlide].offsetLeft,
+      behavior: 'smooth',
+    });
     wrapper.querySelectorAll('.hero-showcase-dot')[currentSlide]?.classList.add('active');
   }
 
