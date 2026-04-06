@@ -1,33 +1,74 @@
+/* Columns Locate - Royal Enfield dealer/service center locator */
+
 .columns-locate > div {
   display: flex;
   flex-direction: column;
-}
-
-.columns-locate img {
-  width: 100%;
+  gap: 32px;
 }
 
 .columns-locate > div > div {
   order: 1;
 }
 
-.columns-locate > div > .columns-locate-img-col {
-  order: 0;
+.columns-locate > div > div:first-child h3 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 16px;
 }
 
-.columns-locate > div > .columns-locate-img-col img {
-  display: block;
+.columns-locate > div > div:first-child p {
+  font-size: 14px;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.columns-locate > div > div:first-child a {
+  color: var(--accent-gold);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color var(--transition-base);
+}
+
+.columns-locate > div > div:first-child a:hover {
+  color: var(--accent-gold-hover);
+}
+
+.columns-locate > div > div:last-child {
+  background-color: var(--light-color);
+  padding: 24px;
+  border-radius: 0;
+}
+
+.columns-locate > div > div:last-child p {
+  font-size: 14px;
+  color: var(--text-color-muted);
+  margin: 0 0 12px;
+}
+
+.columns-locate img {
+  width: 24px;
+  height: auto;
+  vertical-align: middle;
 }
 
 @media (width >= 900px) {
   .columns-locate > div {
+    flex-direction: row;
     align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+    gap: 48px;
   }
 
   .columns-locate > div > div {
     flex: 1;
     order: unset;
+  }
+
+  .columns-locate > div > div:first-child h3 {
+    font-size: 40px;
   }
 }
