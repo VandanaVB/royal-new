@@ -1,25 +1,76 @@
-/* Hero Showcase - Royal Enfield full-viewport hero banner */
+/* Hero Showcase - Royal Enfield full-viewport hero carousel */
+
+/* Break out of EDS section constraints */
+.hero-showcase-container {
+  max-width: unset;
+  padding: 0;
+}
 
 .hero-showcase-container .hero-showcase-wrapper {
   max-width: unset;
   padding: 0;
 }
 
-.hero-showcase-container {
-  max-width: unset;
+/* Override section margin/padding when hero is first block */
+main > .section:first-of-type:has(.hero-showcase) {
+  margin: 0;
+  padding: 0;
 }
 
+main > .section:first-of-type:has(.hero-showcase) > div {
+  max-width: unset;
+  padding: 0;
+}
+
+/* Hide empty/broken elements before hero in the same section */
+.hero-showcase-container p:has(> img[src=""]),
+.hero-showcase-container .cards-dark:empty,
+.hero-showcase-container .default-content-wrapper:has(> ol:first-child) {
+  display: none;
+}
+
+/* Remove header placeholder height when hero is at top */
+body:has(.hero-showcase) header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: auto;
+}
+
+/* Block container */
 .hero-showcase {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
   overflow: hidden;
   background-color: var(--background-color);
   margin: 0;
   padding: 0;
+}
+
+/* Slides container */
+.hero-showcase .hero-showcase-slides {
+  position: absolute;
+  inset: 0;
+}
+
+/* Individual slide */
+.hero-showcase .hero-showcase-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+}
+
+.hero-showcase .hero-showcase-slide.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Background image layer */
@@ -38,16 +89,15 @@
   object-fit: cover;
 }
 
-/* Dark gradient overlay from bottom */
+/* Dark gradient overlay */
 .hero-showcase .hero-showcase-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(
     to top,
-    rgb(0 0 0 / 80%) 0%,
-    rgb(0 0 0 / 40%) 30%,
-    rgb(0 0 0 / 10%) 60%,
+    rgb(0 0 0 / 70%) 0%,
+    rgb(0 0 0 / 30%) 40%,
     transparent 100%
   );
 }
@@ -56,10 +106,18 @@
 .hero-showcase .hero-showcase-content {
   position: relative;
   z-index: 2;
-  text-align: center;
-  padding: 40px 24px 60px;
+  text-align: left;
+  padding: 40px 24px 100px;
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.hero-showcase .hero-showcase-content p {
+  font-size: 14px;
+  color: rgb(200 200 200);
+  margin: 0 0 24px;
+  line-height: 1.6;
 }
 
 .hero-showcase .hero-showcase-content h1,
@@ -68,24 +126,17 @@
   font-weight: 700;
   color: var(--text-color);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 8px;
+  letter-spacing: 1.5px;
+  margin: 0 0 16px;
   text-shadow: 0 2px 8px rgb(0 0 0 / 40%);
-}
-
-.hero-showcase .hero-showcase-content p {
-  font-size: 14px;
-  color: rgb(200 200 200);
-  margin: 0 0 24px;
-  line-height: 1.6;
 }
 
 /* CTA buttons */
 .hero-showcase .hero-showcase-cta {
   display: inline-block;
-  margin: 8px 12px;
+  margin: 8px 8px 8px 0;
   padding: 14px 35px;
-  border: 1px solid var(--text-color);
+  border: 1px solid rgb(167 167 167);
   color: var(--text-color);
   font-size: 14px;
   font-weight: 700;
@@ -101,42 +152,110 @@
   color: var(--background-color);
 }
 
-.hero-showcase .hero-showcase-cta:nth-child(2) {
-  background-color: var(--dark-color);
-  border-color: var(--dark-color);
-  color: var(--accent-gold);
+/* Slide indicators — horizontal bars, left-aligned */
+.hero-showcase .hero-showcase-dots {
+  position: absolute;
+  bottom: 60px;
+  left: 24px;
+  z-index: 3;
+  display: flex;
+  gap: 6px;
 }
 
-.hero-showcase .hero-showcase-cta:nth-child(2):hover {
-  background-color: var(--accent-gold);
-  border-color: var(--accent-gold);
-  color: var(--background-color);
+.hero-showcase .hero-showcase-dot {
+  width: 32px;
+  height: 3px;
+  border-radius: 0;
+  border: none;
+  background-color: rgb(255 255 255 / 30%);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: background-color 0.3s ease;
+}
+
+.hero-showcase .hero-showcase-dot:hover {
+  background-color: rgb(255 255 255 / 60%);
+}
+
+.hero-showcase .hero-showcase-dot.active {
+  background-color: var(--text-color);
+}
+
+/* Scroll to explore indicator */
+.hero-showcase .hero-showcase-scroll {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-color);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.hero-showcase .hero-showcase-scroll::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--text-color);
+  border-radius: 50%;
+}
+
+.hero-showcase .hero-showcase-scroll::after {
+  content: '';
+  display: block;
+  width: 1.5px;
+  height: 6px;
+  background: var(--text-color);
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: hero-scroll-bounce 2s ease-in-out infinite;
+}
+
+@keyframes hero-scroll-bounce {
+  0%,
+  100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(3px); }
 }
 
 /* Responsive */
 @media (width >= 600px) {
+  .hero-showcase .hero-showcase-dots {
+    left: 48px;
+  }
+
+  .hero-showcase .hero-showcase-content {
+    padding: 60px 48px 120px;
+  }
+
   .hero-showcase .hero-showcase-content h1,
   .hero-showcase .hero-showcase-content h2 {
     font-size: 42px;
   }
-
-  .hero-showcase .hero-showcase-content {
-    padding: 60px 32px 80px;
-  }
 }
 
 @media (width >= 900px) {
-  .hero-showcase .hero-showcase-content h1,
-  .hero-showcase .hero-showcase-content h2 {
-    font-size: 56px;
-    letter-spacing: 0.08em;
-  }
-
-  .hero-showcase .hero-showcase-content p {
-    font-size: 16px;
+  .hero-showcase .hero-showcase-dots {
+    left: 64px;
   }
 
   .hero-showcase .hero-showcase-content {
-    padding: 80px 32px 100px;
+    padding: 80px 64px 140px;
+  }
+
+  .hero-showcase .hero-showcase-content h1,
+  .hero-showcase .hero-showcase-content h2 {
+    font-size: 56px;
+    letter-spacing: 2px;
   }
 }

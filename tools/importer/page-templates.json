@@ -10,7 +10,7 @@
         {
           "name": "hero-showcase",
           "instances": [
-            ".homeherobanner"
+            ".swipercarousel.cmp--royal-enfield-swiper"
           ]
         },
         {
@@ -45,7 +45,7 @@
         {
           "id": "section-1",
           "name": "Hero Banner",
-          "selector": ".homeherobanner",
+          "selector": ".swipercarousel.cmp--royal-enfield-swiper",
           "style": null,
           "blocks": [
             "hero-showcase"
