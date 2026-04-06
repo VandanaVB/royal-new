@@ -1,0 +1,39 @@
+{
+  "variantName": "hero-showcase",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-04-06T08:13:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.royalenfield.com/in/en/home/",
+    "originPage": "Royal Enfield India homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "product-showcase",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "background-image + heading + subheading + 2 CTAs",
+    "buttonCount": 2,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "motorcycle/vehicle product pages",
+      "brand homepage hero banners",
+      "dark-themed product showcases"
+    ],
+    "notSuitableFor": [
+      "light-themed pages",
+      "text-only hero sections",
+      "minimal blog headers"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/in/en/home/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-04-06T08:13:00.000Z"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "xwalk",
+  "libraryUrl": "https://main--sta-xwalk-boilerplate--aemysites.aem.page/tools/sidekick/library.json",
+  "contentHostUrl": "author-p8803-e21945.adobeaemcloud.com",
+  "aemSitePath": "/content/royal-new",
+  "aemAssetsFolderPath": "/content/dam/royal-new",
+  "aemSiteName": "royal-new",
+  "aemSiteTitle": "Royal New"
+}

@@ -19,9 +19,36 @@
     ]
   },
   {
+    "id": "cards-dark",
+    "components": [
+      "card"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
+    ]
+  },
+  {
+    "id": "carousel-legacy",
+    "components": [
+      "carousel-legacy-item"
+    ]
+  },
+  {
+    "id": "columns-locate",
+    "components": [
+      "column"
+    ]
+  },
+  {
+    "id": "column",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title"
     ]
   },
   {
@@ -37,6 +64,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "tabs-browse",
+    "components": [
+      "tabs-browse-item"
     ]
   }
 ]
