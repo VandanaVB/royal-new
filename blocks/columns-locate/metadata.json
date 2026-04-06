@@ -1,0 +1,39 @@
+{
+  "variantName": "columns-locate",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-04-06T08:13:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.royalenfield.com/in/en/home/",
+    "originPage": "Royal Enfield India homepage",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "store-locator",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "heading + description + link | search-field",
+    "buttonCount": 1,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "dealer/store locator sections",
+      "split content with form fields",
+      "dark-themed 2-column layouts"
+    ],
+    "notSuitableFor": [
+      "image-heavy column layouts",
+      "3+ column layouts",
+      "light-themed content splits"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/in/en/home/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-04-06T08:13:00.000Z"
+  }
+}
