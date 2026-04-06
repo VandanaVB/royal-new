@@ -2,52 +2,67 @@
 /* global WebImporter */
 
 /**
- * Parser for hero-showcase. Base: hero.
+ * Parser for hero-showcase. Base: hero (carousel variant).
  * Source: https://www.royalenfield.com/in/en/home/
- * Selector: .homeherobanner
- * Model fields: image (reference), imageAlt (collapsed), text (richtext)
- * Block library: 1 col, row 1=image, row 2=text(heading+description+CTA)
+ * Selector: .swipercarousel.cmp--royal-enfield-swiper
+ *
+ * Extracts ALL carousel slides as separate rows.
+ * Each row: col1 = image, col2 = title + CTA text
+ * This creates a carousel-style block table that the JS decorator
+ * will turn into a sliding hero carousel.
  */
 export default function parse(element, { document }) {
-  // Extract slides from the swiper
-  const slides = element.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate)');
-  // Use the active slide, or the first slide as fallback
-  let activeSlide = element.querySelector('.swiper-slide-active');
-  if (!activeSlide && slides.length > 0) activeSlide = slides[0];
-  if (!activeSlide) activeSlide = element;
-
-  // Row 1: Background image
-  const bgImg = activeSlide.querySelector('img.bg-img, .card-image img, img');
-  const imageCell = [];
-  if (bgImg) {
-    const frag = document.createDocumentFragment();
-    frag.appendChild(document.createComment(' field:image '));
-    frag.appendChild(bgImg);
-    imageCell.push(frag);
-  }
-
-  // Row 2: Text content (heading + description + CTAs)
-  const textCell = [];
-  const frag2 = document.createDocumentFragment();
-  frag2.appendChild(document.createComment(' field:text '));
-
-  const heading = activeSlide.querySelector('.card-title, h2, h1');
-  if (heading) frag2.appendChild(heading);
-
-  const description = activeSlide.querySelector('.card-description, p');
-  if (description) frag2.appendChild(description);
-
-  const ctaContainer = activeSlide.querySelector('.cta-buttons');
-  if (ctaContainer) {
-    const links = ctaContainer.querySelectorAll('a');
-    links.forEach((link) => frag2.appendChild(link));
-  }
-
-  textCell.push(frag2);
-
+  const slides = element.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate), .cmp-carousel__item:not(.swiper-slide-duplicate)');
   const cells = [];
-  if (imageCell.length > 0) cells.push(imageCell);
-  if (textCell.length > 0) cells.push(textCell);
+
+  slides.forEach((slide) => {
+    const img = slide.querySelector('img');
+    if (!img) return;
+
+    // Col 1: image
+    const imgFrag = document.createDocumentFragment();
+    imgFrag.appendChild(document.createComment(' field:image '));
+    imgFrag.appendChild(img);
+
+    // Col 2: title + CTA
+    const textFrag = document.createDocumentFragment();
+    textFrag.appendChild(document.createComment(' field:text '));
+
+    // Extract title from paragraphs (skip image-only paragraphs)
+    const paragraphs = slide.querySelectorAll('p, h2, h1');
+    paragraphs.forEach((p) => {
+      if (p.querySelector('img') && p.textContent.trim() === '') return;
+      const text = p.textContent.trim();
+      if (text) {
+        const heading = document.createElement('h2');
+        heading.textContent = text;
+        textFrag.appendChild(heading);
+      }
+    });
+
+    // Convert buttons to links
+    slide.querySelectorAll('button').forEach((btn) => {
+      const btnText = btn.textContent.trim();
+      if (btnText) {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = btnText;
+        textFrag.appendChild(link);
+      }
+    });
+
+    // Also capture any existing links
+    slide.querySelectorAll('a').forEach((link) => {
+      textFrag.appendChild(link);
+    });
+
+    cells.push([imgFrag, textFrag]);
+  });
+
+  if (cells.length === 0) {
+    // Fallback: at least one empty row
+    cells.push(['', '']);
+  }
 
   const block = WebImporter.Blocks.createBlock(document, { name: 'hero-showcase', cells });
   element.replaceWith(block);

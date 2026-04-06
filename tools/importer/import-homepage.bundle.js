@@ -42,34 +42,43 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/hero-showcase.js
   function parse(element, { document }) {
-    const slides = element.querySelectorAll(".swiper-slide:not(.swiper-slide-duplicate)");
-    let activeSlide = element.querySelector(".swiper-slide-active");
-    if (!activeSlide && slides.length > 0) activeSlide = slides[0];
-    if (!activeSlide) activeSlide = element;
-    const bgImg = activeSlide.querySelector("img.bg-img, .card-image img, img");
-    const imageCell = [];
-    if (bgImg) {
-      const frag = document.createDocumentFragment();
-      frag.appendChild(document.createComment(" field:image "));
-      frag.appendChild(bgImg);
-      imageCell.push(frag);
-    }
-    const textCell = [];
-    const frag2 = document.createDocumentFragment();
-    frag2.appendChild(document.createComment(" field:text "));
-    const heading = activeSlide.querySelector(".card-title, h2, h1");
-    if (heading) frag2.appendChild(heading);
-    const description = activeSlide.querySelector(".card-description, p");
-    if (description) frag2.appendChild(description);
-    const ctaContainer = activeSlide.querySelector(".cta-buttons");
-    if (ctaContainer) {
-      const links = ctaContainer.querySelectorAll("a");
-      links.forEach((link) => frag2.appendChild(link));
-    }
-    textCell.push(frag2);
+    const slides = element.querySelectorAll(".swiper-slide:not(.swiper-slide-duplicate), .cmp-carousel__item:not(.swiper-slide-duplicate)");
     const cells = [];
-    if (imageCell.length > 0) cells.push(imageCell);
-    if (textCell.length > 0) cells.push(textCell);
+    slides.forEach((slide) => {
+      const img = slide.querySelector("img");
+      if (!img) return;
+      const imgFrag = document.createDocumentFragment();
+      imgFrag.appendChild(document.createComment(" field:image "));
+      imgFrag.appendChild(img);
+      const textFrag = document.createDocumentFragment();
+      textFrag.appendChild(document.createComment(" field:text "));
+      const paragraphs = slide.querySelectorAll("p, h2, h1");
+      paragraphs.forEach((p) => {
+        if (p.querySelector("img") && p.textContent.trim() === "") return;
+        const text = p.textContent.trim();
+        if (text) {
+          const heading = document.createElement("h2");
+          heading.textContent = text;
+          textFrag.appendChild(heading);
+        }
+      });
+      slide.querySelectorAll("button").forEach((btn) => {
+        const btnText = btn.textContent.trim();
+        if (btnText) {
+          const link = document.createElement("a");
+          link.href = "#";
+          link.textContent = btnText;
+          textFrag.appendChild(link);
+        }
+      });
+      slide.querySelectorAll("a").forEach((link) => {
+        textFrag.appendChild(link);
+      });
+      cells.push([imgFrag, textFrag]);
+    });
+    if (cells.length === 0) {
+      cells.push(["", ""]);
+    }
     const block = WebImporter.Blocks.createBlock(document, { name: "hero-showcase", cells });
     element.replaceWith(block);
   }
@@ -391,7 +400,7 @@ var CustomImportScript = (() => {
     blocks: [
       {
         name: "hero-showcase",
-        instances: [".homeherobanner"]
+        instances: [".swipercarousel.cmp--royal-enfield-swiper"]
       },
       {
         name: "cards-dark",
@@ -414,7 +423,7 @@ var CustomImportScript = (() => {
       {
         id: "section-1",
         name: "Hero Banner",
-        selector: ".homeherobanner",
+        selector: ".swipercarousel.cmp--royal-enfield-swiper",
         style: null,
         blocks: ["hero-showcase"],
         defaultContent: []
