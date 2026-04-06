@@ -31,7 +31,7 @@ const PAGE_TEMPLATE = {
   blocks: [
     {
       name: 'hero-showcase',
-      instances: ['.homeherobanner']
+      instances: ['.swipercarousel.cmp--royal-enfield-swiper']
     },
     {
       name: 'cards-dark',
@@ -54,7 +54,7 @@ const PAGE_TEMPLATE = {
     {
       id: 'section-1',
       name: 'Hero Banner',
-      selector: '.homeherobanner',
+      selector: '.swipercarousel.cmp--royal-enfield-swiper',
       style: null,
       blocks: ['hero-showcase'],
       defaultContent: []
