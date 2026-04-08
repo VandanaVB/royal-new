@@ -67,6 +67,12 @@
     ]
   },
   {
+    "id": "hero-showcase",
+    "components": [
+      "hero-showcase-item"
+    ]
+  },
+  {
     "id": "tabs-browse",
     "components": [
       "tabs-browse-item"

@@ -254,13 +254,13 @@
     ]
   },
   {
-    "id": "hero-showcase",
+    "id": "hero-showcase-item",
     "fields": [
       {
         "component": "reference",
         "valueType": "string",
         "name": "image",
-        "label": "Image",
+        "label": "Background Image",
         "multi": false
       },
       {
