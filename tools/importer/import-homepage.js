@@ -7,6 +7,7 @@ import cardsDarkParser from './parsers/cards-dark.js';
 import tabsBrowseParser from './parsers/tabs-browse.js';
 import carouselLegacyParser from './parsers/carousel-legacy.js';
 import columnsLocateParser from './parsers/columns-locate.js';
+import headlightsParser from './parsers/headlights.js';
 
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/royalenfield-cleanup.js';
@@ -19,6 +20,7 @@ const parsers = {
   'tabs-browse': tabsBrowseParser,
   'carousel-legacy': carouselLegacyParser,
   'columns-locate': columnsLocateParser,
+  'headlights': headlightsParser,
 };
 
 // PAGE TEMPLATE CONFIGURATION
@@ -34,8 +36,12 @@ const PAGE_TEMPLATE = {
       instances: ['.swipercarousel.cmp--royal-enfield-swiper']
     },
     {
+      name: 'headlights',
+      instances: ['.whats-tranding-container']
+    },
+    {
       name: 'cards-dark',
-      instances: ['.herostripe', '.motoculture', '.iridegrid', '.royal-enfield-shop-us']
+      instances: ['.motoculture', '.iridegrid', '.royal-enfield-shop-us']
     },
     {
       name: 'tabs-browse',
