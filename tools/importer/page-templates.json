@@ -14,9 +14,14 @@
           ]
         },
         {
+          "name": "headlights",
+          "instances": [
+            ".whats-tranding-container"
+          ]
+        },
+        {
           "name": "cards-dark",
           "instances": [
-            ".herostripe",
             ".motoculture",
             ".iridegrid",
             ".royal-enfield-shop-us"

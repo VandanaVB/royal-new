@@ -303,6 +303,57 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
+  // tools/importer/parsers/headlights.js
+  function parse6(element, { document }) {
+    const cells = [];
+    const slides = element.querySelectorAll(".swiper-slide:not(.swiper-slide-duplicate)");
+    slides.forEach((slide) => {
+      const desktopImg = slide.querySelector('img[title="desktopBgImageReference"]');
+      const bgImg = slide.querySelector(".bg-img");
+      const anyImg = slide.querySelector("img");
+      const img = desktopImg || bgImg || anyImg;
+      if (!img) return;
+      const imgFrag = document.createDocumentFragment();
+      imgFrag.appendChild(document.createComment(" field:image "));
+      imgFrag.appendChild(img);
+      const textFrag = document.createDocumentFragment();
+      textFrag.appendChild(document.createComment(" field:text "));
+      const title = slide.querySelector("h2, .card-title");
+      if (title) {
+        const h2 = document.createElement("h2");
+        h2.textContent = title.textContent.trim();
+        textFrag.appendChild(h2);
+      }
+      const desc = slide.querySelector(".card-description, p");
+      if (desc && desc.textContent.trim()) {
+        const p = document.createElement("p");
+        p.textContent = desc.textContent.trim();
+        textFrag.appendChild(p);
+      }
+      const ctaContainer = slide.querySelector(".cta-buttons");
+      const ctas = ctaContainer ? ctaContainer.querySelectorAll("a") : slide.querySelectorAll("a");
+      ctas.forEach((cta) => {
+        const link = document.createElement("a");
+        link.href = cta.href || "#";
+        link.textContent = cta.textContent.trim();
+        textFrag.appendChild(link);
+      });
+      slide.querySelectorAll("button").forEach((btn) => {
+        const btnText = btn.textContent.trim();
+        if (btnText && btnText !== "prev" && btnText !== "next") {
+          const link = document.createElement("a");
+          link.href = "#";
+          link.textContent = btnText;
+          textFrag.appendChild(link);
+        }
+      });
+      cells.push([imgFrag, textFrag]);
+    });
+    if (cells.length === 0) return;
+    const block = WebImporter.Blocks.createBlock(document, { name: "headlights", cells });
+    element.replaceWith(block);
+  }
+
   // tools/importer/transformers/royalenfield-cleanup.js
   var H = { before: "beforeTransform", after: "afterTransform" };
   function transform(hookName, element, payload) {
@@ -389,7 +440,8 @@ var CustomImportScript = (() => {
     "cards-dark": parse2,
     "tabs-browse": parse3,
     "carousel-legacy": parse4,
-    "columns-locate": parse5
+    "columns-locate": parse5,
+    "headlights": parse6
   };
   var PAGE_TEMPLATE = {
     name: "homepage",
@@ -403,8 +455,12 @@ var CustomImportScript = (() => {
         instances: [".swipercarousel.cmp--royal-enfield-swiper"]
       },
       {
+        name: "headlights",
+        instances: [".whats-tranding-container"]
+      },
+      {
         name: "cards-dark",
-        instances: [".herostripe", ".motoculture", ".iridegrid", ".royal-enfield-shop-us"]
+        instances: [".motoculture", ".iridegrid", ".royal-enfield-shop-us"]
       },
       {
         name: "tabs-browse",

@@ -67,6 +67,12 @@
     ]
   },
   {
+    "id": "headlights",
+    "components": [
+      "headlights-item"
+    ]
+  },
+  {
     "id": "hero-showcase",
     "components": [
       "hero-showcase-item"

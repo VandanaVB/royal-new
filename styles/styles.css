@@ -29,9 +29,10 @@
   --accent-gold-hover: #e6b800;
   --accent-red: #da291c;
   --accent-red-hover: #ff3326;
-  --border-color: rgba(255, 255, 255, 0.15);
+  --border-color: rgb(255 255 255 / 15%);
 
   /* === Fonts === */
+
   /* Note: GuardianSansXCond is proprietary. Using Montserrat condensed-weight as stand-in.
      Replace with 'GuardianSansXCond' when font files are available. */
   --body-font-family: 'Montserrat', montserrat-fallback, sans-serif;
@@ -86,7 +87,6 @@
     --body-font-size-m: 16px;
     --body-font-size-s: 14px;
     --body-font-size-xs: 12px;
-
     --heading-font-size-xxl: 42px;
     --heading-font-size-xl: 32px;
     --heading-font-size-l: 28px;
@@ -107,7 +107,7 @@ body {
   font-weight: 300;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
 }
 
 body.appear {
@@ -145,7 +145,12 @@ h6 {
   scroll-margin: 40px;
 }
 
-h1 { font-size: var(--heading-font-size-xxl); font-weight: 700; text-transform: uppercase; }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 h2 { font-size: var(--heading-font-size-xl); }
 h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
@@ -283,12 +288,14 @@ main > div {
   margin: var(--spacing-l) var(--spacing-s);
 }
 
+/* stylelint-disable no-descending-specificity */
 input,
 textarea,
 select,
 button {
   font: inherit;
 }
+/* stylelint-enable no-descending-specificity */
 
 /* === Sections === */
 main > .section {
@@ -342,4 +349,10 @@ main .section.highlight {
   color: var(--text-color);
   margin: 0;
   padding: var(--spacing-xl) 0;
+}
+
+/* Hide duplicate headlights sections from import */
+h2#in-the-headlights-1,
+h2#in-the-headlights-1 ~ * {
+  display: none;
 }

@@ -1,0 +1,297 @@
+/* Headlights — center-focused spotlight carousel */
+
+/* Break out of EDS constraints */
+.headlights-container {
+  max-width: unset;
+  padding: 0;
+}
+
+.headlights-container .headlights-wrapper,
+.headlights-container .hl-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* Fixed height section — prevents resize on card content change */
+.headlights {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background: var(--background-color);
+  min-height: 680px;
+}
+
+/* ── Heading ── */
+.hl-heading {
+  position: relative;
+  z-index: 2;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--text-color);
+  margin: 0;
+  padding: 48px 48px 32px;
+}
+
+/* ── Blurred section background — transitions with active slide ── */
+.hl-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) brightness(0.45);
+  transform: scale(1.2);
+  transition: background-image 0.5s ease-in-out;
+}
+
+/* ── Track — all slides in one horizontal row ── */
+.hl-track {
+  display: flex;
+  align-items: center;
+  transition: transform 0.5s ease-in-out;
+  position: relative;
+  z-index: 1;
+  padding-left: 20%;
+}
+
+/* ── Each slide — wider to span between arrows ── */
+.hl-slide {
+  flex: 0 0 58%;
+  padding: 0 12px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ── Slide image ── */
+.hl-slide-img {
+  width: 100%;
+  aspect-ratio: 650 / 290;
+  overflow: hidden;
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+}
+
+.hl-slide.active .hl-slide-img {
+  opacity: 1;
+}
+
+.hl-slide-img img,
+.hl-slide-img picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Card content — fades in/out smoothly during slide transitions ── */
+.hl-slide-card {
+  background: rgb(30 30 30 / 85%);
+  padding: 20px 24px 24px;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease, max-height 0.4s ease;
+}
+
+.hl-slide.active .hl-slide-card {
+  opacity: 1;
+  visibility: visible;
+  max-height: 400px;
+}
+
+.hl-slide-card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+  color: var(--text-color);
+}
+
+.hl-slide-card p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgb(200 200 200);
+  margin: 0 0 16px;
+
+  /* Clamp long text to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── CTAs ── */
+.hl-ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* stylelint-disable no-descending-specificity */
+
+.headlights .hl-slide-card a.button.hl-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  border: 1px solid rgb(120 120 120);
+  border-radius: 0;
+  background: rgb(50 50 50 / 80%);
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.headlights .hl-slide-card a.button.hl-cta:hover {
+  background: rgb(80 80 80);
+  color: white;
+}
+
+.headlights .hl-ctas a.button.hl-cta:nth-child(2) {
+  background: rgb(60 60 60 / 80%);
+  border-color: rgb(100 100 100);
+  color: var(--accent-gold);
+}
+
+.headlights .hl-ctas a.button.hl-cta:nth-child(2):hover {
+  background: var(--accent-gold);
+  color: black;
+}
+
+/* stylelint-enable no-descending-specificity */
+
+/* ── Navigation arrows — positioned to frame the center card ── */
+.hl-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+
+  /* Match the card edges: 20% padding-left + 58% card = arrows at ~20% and ~78% */
+  padding: 0 calc(50% - 340px);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hl-nav button {
+  pointer-events: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(255 255 255 / 40%);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+
+.hl-nav button:hover {
+  border-color: var(--accent-gold);
+}
+
+.hl-nav button:hover::after {
+  border-color: var(--accent-gold);
+}
+
+.hl-nav button:active {
+  border-color: var(--accent-gold);
+}
+
+/* Prev — left chevron */
+.hl-prev::after {
+  content: '';
+  display: block;
+  border: 2px solid white;
+  border-bottom: 0;
+  border-right: 0;
+  width: 11px;
+  height: 11px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 2px);
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Next — right chevron */
+.hl-next::after {
+  content: '';
+  display: block;
+  border: 2px solid white;
+  border-bottom: 0;
+  border-left: 0;
+  width: 11px;
+  height: 11px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 2px);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* ── Mobile ── */
+@media (width < 600px) {
+  .headlights {
+    min-height: 480px;
+  }
+
+  .hl-track {
+    padding-left: 5%;
+  }
+
+  .hl-slide {
+    flex: 0 0 80%;
+  }
+
+  .hl-heading {
+    padding: 32px 24px 24px;
+    font-size: 24px;
+  }
+
+  .hl-nav {
+    padding: 0 8px;
+  }
+}
+
+/* ── Tablet ── */
+@media (width >= 600px) and (width < 900px) {
+  .headlights {
+    min-height: 560px;
+  }
+
+  .hl-track {
+    padding-left: 12%;
+  }
+
+  .hl-slide {
+    flex: 0 0 65%;
+  }
+
+  .hl-nav {
+    padding: 0 calc(50% - 300px);
+  }
+}
+
+/* ── Desktop ── */
+@media (width >= 900px) {
+  .headlights {
+    min-height: 720px;
+  }
+
+  .hl-heading {
+    padding: 60px 64px 32px;
+  }
+
+}

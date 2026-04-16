@@ -132,13 +132,14 @@ body:has(.hero-showcase) header {
   text-shadow: 0 2px 8px rgb(0 0 0 / 40%);
 }
 
-/* CTA buttons — dark semi-transparent fill matching original */
-.hero-showcase .hero-showcase-cta {
+/* CTA buttons — high specificity to override EDS .button and section.dark link colors */
+.hero-showcase .hero-showcase-content a.button.hero-showcase-cta {
   display: inline-block;
   margin: 8px 8px 8px 0;
   padding: 14px 35px;
   border: 1px solid rgb(167 167 167);
-  color: var(--text-color);
+  border-radius: 0;
+  color: white;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
@@ -148,9 +149,9 @@ body:has(.hero-showcase) header {
   transition: var(--button-transition);
 }
 
-.hero-showcase .hero-showcase-cta:hover {
+.hero-showcase .hero-showcase-content a.button.hero-showcase-cta:hover {
   background-color: rgb(80 80 80 / 85%);
-  color: var(--text-color);
+  color: white;
 }
 
 /* Slide indicators — horizontal bars, left-aligned */
