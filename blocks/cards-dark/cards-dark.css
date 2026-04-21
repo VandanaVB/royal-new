@@ -1,77 +1,141 @@
-/* Cards Dark - Royal Enfield dark-themed card grid */
+/* Cards Dark - Royal Enfield dark-themed cards */
+/* stylelint-disable no-descending-specificity */
 
+/* ── Card list layout ── */
 .cards-dark > ul {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  padding: 0 24px;
+  display: flex;
+  gap: 40px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
 }
 
+.cards-dark > ul::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Card ── */
 .cards-dark > ul > li {
-  border: 1px solid rgb(55 55 55 / 100%);
-  background-color: var(--background-color);
+  flex: 0 0 calc(25% - 30px);
+  min-width: 260px;
+  background-color: rgb(40 40 40);
   overflow: hidden;
-  transition: border-color var(--transition-base);
+  cursor: pointer;
+  scroll-snap-align: start;
+  position: relative;
+  border-radius: 8px;
 }
 
-.cards-dark > ul > li:hover {
-  border-color: rgb(100 100 100 / 100%);
+/* Hide empty list items (imported alternating empty rows) */
+.cards-dark > ul > li:not(:has(img), :has(h2), :has(h3), :has(h4)) {
+  display: none;
 }
 
-.cards-dark .cards-dark-card-body {
-  padding: 16px 20px;
-}
-
-.cards-dark .cards-dark-card-body h2,
-.cards-dark .cards-dark-card-body h3,
-.cards-dark .cards-dark-card-body h4 {
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--text-color);
-  margin: 0 0 8px;
-}
-
-.cards-dark .cards-dark-card-body p {
-  font-size: 14px;
-  color: rgb(166 166 166);
-  margin: 0 0 12px;
-  line-height: 1.5;
-}
-
-.cards-dark .cards-dark-card-body a {
-  color: var(--text-color);
-  font-size: 14px;
-  font-weight: 400;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: color var(--transition-base);
-}
-
-.cards-dark .cards-dark-card-body a:hover {
-  color: var(--accent-gold);
-}
-
-.cards-dark .cards-dark-card-image {
-  line-height: 0;
-  overflow: hidden;
-}
-
+/* ── Card image ── */
 .cards-dark > ul > li img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  transition: transform var(--transition-slow);
+  display: block;
+  transition: transform 0.4s ease;
 }
 
 .cards-dark > ul > li:hover img {
   transform: scale(1.05);
 }
 
+/* ── Card image area ── */
+.cards-dark .cards-dark-card-body:first-child {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+}
+
+/* ── Card body text (base) ── */
+.cards-dark .cards-dark-card-body p {
+  font-size: 20px;
+  color: var(--text-color);
+  margin: 0 0 8px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.cards-dark .cards-dark-card-body:first-child p {
+  margin: 0;
+  line-height: 0;
+}
+
+/* ── Card text area ── */
+.cards-dark .cards-dark-card-body:last-child {
+  padding: 0 20px 24px;
+  position: relative;
+}
+
+/* Number heading (01, 02, 03, 04) — overlaid on bottom of image */
+.cards-dark .cards-dark-card-body h4 {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: -56px 0 0;
+  padding: 0 0 16px;
+  position: relative;
+  z-index: 1;
+  border-bottom: 2px solid rgb(120 120 120);
+  display: inline-block;
+  min-width: 60px;
+}
+
+/* Regular headings (h2, h3) */
+.cards-dark .cards-dark-card-body h2,
+.cards-dark .cards-dark-card-body h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0 0 8px;
+}
+
+/* CTA links */
+.cards-dark .cards-dark-card-body a {
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.cards-dark .cards-dark-card-body a:hover {
+  color: var(--accent-gold);
+}
+
+/* stylelint-enable no-descending-specificity */
+
+/* ── Desktop: 4 visible cards ── */
 @media (width >= 900px) {
   .cards-dark > ul {
-    grid-template-columns: repeat(3, 1fr);
+    padding: 0 64px;
+  }
+
+  .cards-dark > ul > li {
+    flex: 0 0 calc(25% - 30px);
+  }
+}
+
+/* ── Tablet: 2 visible cards ── */
+@media (width >= 600px) and (width < 900px) {
+  .cards-dark > ul > li {
+    flex: 0 0 calc(50% - 20px);
+  }
+}
+
+/* ── Mobile: 1 card visible, scrollable ── */
+@media (width < 600px) {
+  .cards-dark > ul > li {
+    flex: 0 0 85%;
   }
 }
