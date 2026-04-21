@@ -1,113 +1,387 @@
 /* Tabs Browse - Royal Enfield motorcycle category browser */
 
-.tabs-browse .tabs-browse-list {
-  display: flex;
-  gap: 0;
-  max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  justify-content: center;
-  padding: 0 16px;
+/* ── Section heading ── */
+.tabs-browse .tabs-browse-heading {
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0;
+  padding: 40px 24px 24px;
+  text-align: left;
 }
 
-.tabs-browse .tabs-browse-list::-webkit-scrollbar {
+/* ══════════════════════════════════════════════
+   Category tabs — match original Slick carousel style
+   ══════════════════════════════════════════════ */
+.tb-cat-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 0 20px;
+  overflow: auto hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+/* Clones of edge items allow first/last to be centered with context */
+.tb-cat-clone {
+  flex: 0 0 33.33%;
+  padding: 10px 4px;
+  text-align: center;
+  color: rgb(79 79 79);
+  font-family: var(--body-font-family);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tb-name-clone {
+  flex: 0 0 33.33%;
+  padding: 8px 4px;
+  text-align: center;
+  color: rgb(79 79 79);
+  font-family: var(--body-font-family);
+  font-size: 28px;
+  font-weight: 500;
+  white-space: normal;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.tb-cat-tabs::-webkit-scrollbar {
   display: none;
 }
 
-.tabs-browse .tabs-browse-list button {
-  flex: 0 0 max-content;
+.tb-cat-btn {
+  flex: 0 0 33.33%;
+  padding: 10px 4px;
+  scroll-snap-align: center;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
   border: none;
   border-radius: 0;
-  padding: 10px 20px;
-  background-color: transparent;
-  color: rgb(166 166 166);
+  background: transparent;
+  color: rgb(79 79 79);
   font-family: var(--body-font-family);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.4;
-  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
-  transition: color var(--transition-base);
+  transition: color 0.3s ease, font-weight 0.3s ease;
 }
 
-.tabs-browse .tabs-browse-list button p {
-  margin: 0;
+/* stylelint-disable no-descending-specificity */
+
+.tb-cat-btn:hover {
+  color: rgb(130 130 130);
 }
 
-.tabs-browse .tabs-browse-list button:hover {
-  color: var(--text-color);
+.tb-cat-btn.active {
+  color: rgb(166 166 166);
+  font-weight: 700;
+  font-size: 28px;
 }
 
-.tabs-browse .tabs-browse-list button[aria-selected='true'] {
-  color: var(--text-color);
-  background-color: transparent;
-  border-bottom: 2px solid var(--accent-gold);
+/* Override EDS global button:hover/focus white bg */
+.tabs-browse .tb-cat-btn:hover,
+.tabs-browse .tb-cat-btn:active,
+.tabs-browse .tb-cat-btn:focus {
+  background: transparent;
+  outline: none;
 }
 
-.tabs-browse .tabs-browse-panel {
-  margin-top: 0;
-  padding: 32px 24px;
-  border: none;
-  overflow: visible;
-  text-align: center;
+/* ══════════════════════════════════════════════
+   Separator line + bracket highlight
+   ══════════════════════════════════════════════ */
+
+.tb-separator {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgb(70 70 70) 15%, rgb(70 70 70) 85%, transparent);
+  margin: 0 0 8px;
 }
 
-.tabs-browse .tabs-browse-panel[aria-hidden='true'] {
+/* Trapezoid bracket under active tab — matches original's central-highlight */
+.tb-bracket {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 20px;
+}
+
+.tb-bracket::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(90 90 90);
+  border-top: 0;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+}
+
+/* ══════════════════════════════════════════════
+   Bike name sub-navigation — flat carousel across all categories
+   ══════════════════════════════════════════════ */
+
+.tb-name-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 8px 12px;
+  position: relative;
+}
+
+/* ── Arrow buttons ── */
+.tb-name-arrow {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(255 255 255 / 30%);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  transition: border-color 0.2s ease;
+}
+
+.tb-name-arrow:hover {
+  border-color: var(--accent-gold);
+}
+
+/* Prev chevron */
+.tb-name-prev::after {
+  content: '';
+  display: block;
+  border: 2px solid white;
+  border-bottom: 0;
+  border-right: 0;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 2px);
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Next chevron */
+.tb-name-next::after {
+  content: '';
+  display: block;
+  border: 2px solid white;
+  border-bottom: 0;
+  border-left: 0;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 2px);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.tb-name-arrow:hover::after {
+  border-color: var(--accent-gold);
+}
+
+/* Override EDS global button:hover/focus white bg */
+.tabs-browse .tb-name-arrow:focus {
+  background: transparent;
+  outline: none;
+}
+
+/* ── Name track — shows ~3 names at a time ── */
+.tb-name-track {
+  display: flex;
+  gap: 0;
+  overflow: auto hidden;
+  scrollbar-width: none;
+  flex: 1;
+  scroll-behavior: smooth;
+}
+
+.tb-name-track::-webkit-scrollbar {
   display: none;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.tabs-browse .tabs-browse-panel p {
-  margin: 8px 0;
-}
-
-.tabs-browse .tabs-browse-panel h3 {
+/* ── Individual bike name buttons — each ~33% of track ── */
+.tb-name-btn {
+  flex: 0 0 33.33%;
+  padding: 8px 4px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  color: rgb(79 79 79);
+  font-family: var(--body-font-family);
   font-size: 28px;
-  font-weight: 600;
-  color: var(--text-color);
-  margin: 0 0 16px;
+  font-weight: 500;
+  white-space: normal;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-transform: none;
+  line-height: 1.2;
 }
 
-.tabs-browse .tabs-browse-panel img {
+.tb-name-btn:hover {
+  color: rgb(180 180 180);
+}
+
+.tb-name-btn.active {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+/* Override EDS global button:hover/focus white bg */
+.tabs-browse .tb-name-btn:hover,
+.tabs-browse .tb-name-btn:active,
+.tabs-browse .tb-name-btn:focus {
+  background: transparent;
+  outline: none;
+}
+
+/* ── Bike image ── */
+.tb-bike-img {
+  padding: 16px 24px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tb-bike-img img {
   max-width: 100%;
   max-height: 400px;
   object-fit: contain;
-  margin: 16px auto;
   display: block;
+  margin: 0 auto;
 }
 
-.tabs-browse .tabs-browse-panel a {
-  display: inline-block;
-  margin: 8px 12px;
-  padding: 14px 30px;
-  border: 1px solid var(--text-color);
+/* ══════════════════════════════════════════════
+   CTAs
+   ══════════════════════════════════════════════ */
+
+.tb-bike-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 24px 66px;
+}
+
+/* "Know More" — red text link, centered */
+main .section.dark .tabs-browse a.tb-cta-know:any-link {
+  display: block;
+  flex-basis: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: rgb(218 41 28);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  text-decoration: none;
+  text-align: center;
+}
+
+main .section.dark .tabs-browse a.tb-cta-know:any-link:hover {
+  color: rgb(255 80 60);
+  background: transparent;
+}
+
+/* "CONFIGURE NOW" — white bordered button */
+main .section.dark .tabs-browse a.tb-cta-configure:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 40px;
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 0;
   color: var(--text-color);
+  background: transparent;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  min-width: 200px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+main .section.dark .tabs-browse a.tb-cta-configure:any-link:hover {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+/* "BOOK A TEST RIDE" — gold accent */
+main .section.dark .tabs-browse a.tb-cta-testride:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 40px;
+  border: 1px solid rgb(128 128 128);
+  border-radius: 0;
+  color: var(--accent-gold);
+  background: transparent;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: 0.5px;
-  transition: var(--button-transition);
+  min-width: 200px;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.tabs-browse .tabs-browse-panel a:hover {
-  background-color: var(--text-color);
+main .section.dark .tabs-browse a.tb-cta-testride:any-link:hover {
+  background-color: var(--accent-gold);
   color: var(--background-color);
+  border-color: var(--accent-gold);
 }
 
+/* Arrow icon in test ride CTA */
+.tb-cta-arrow {
+  max-height: 14px;
+  max-width: 14px;
+  display: inline;
+  vertical-align: middle;
+}
+
+/* stylelint-enable no-descending-specificity */
+
+/* ── Desktop ── */
 @media (width >= 900px) {
-  .tabs-browse .tabs-browse-list button {
-    font-size: 22px;
-    padding: 10px 28px;
+  .tabs-browse .tabs-browse-heading {
+    padding: 48px 64px 24px;
   }
 
-  .tabs-browse .tabs-browse-panel h3 {
-    font-size: 36px;
+  .tb-name-arrow {
+    width: 48px;
+    height: 48px;
   }
 
-  .tabs-browse .tabs-browse-panel img {
+  .tb-name-nav {
+    padding: 8px 16px;
+  }
+
+  .tb-bike-img {
+    min-height: 380px;
+    padding: 16px 48px;
+  }
+
+  .tb-bike-img img {
     max-height: 500px;
+  }
+
+  main .section.dark .tabs-browse a.tb-cta-configure:any-link,
+  main .section.dark .tabs-browse a.tb-cta-testride:any-link {
+    min-width: 240px;
   }
 }

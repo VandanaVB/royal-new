@@ -88,18 +88,16 @@ export default function decorate(block) {
   });
   wrapper.appendChild(track);
 
-  // Slide width percentage — must match CSS flex-basis
-  const pct = () => {
-    if (window.innerWidth >= 900) return 58;
-    if (window.innerWidth >= 600) return 65;
-    return 80;
+  // Calculate offset per slide (slide width + gap) from rendered DOM
+  const getSlideStep = () => {
+    if (slides.length < 2) return 0;
+    const r0 = slides[0].getBoundingClientRect();
+    const r1 = slides[1].getBoundingClientRect();
+    return r1.left - r0.left;
   };
 
-  // Offset = slide index * slide width
-  const offset = (i) => i * pct();
-
   // Initial position
-  track.style.transform = 'translateX(0%)';
+  track.style.transform = 'translateX(0px)';
 
   // Nav
   let cur = 0;
@@ -111,7 +109,8 @@ export default function decorate(block) {
     slides[cur].classList.remove('active');
     cur = t;
     slides[cur].classList.add('active');
-    track.style.transform = `translateX(-${offset(cur)}%)`;
+    const step = getSlideStep();
+    track.style.transform = `translateX(-${cur * step}px)`;
     // Update blurred background to match active slide
     if (imgSrcs[cur]) bg.style.backgroundImage = `url(${imgSrcs[cur]})`;
   };

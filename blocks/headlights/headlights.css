@@ -12,7 +12,7 @@
   padding: 0;
 }
 
-/* Fixed height section — prevents resize on card content change */
+/* Section container */
 .headlights {
   position: relative;
   overflow: hidden;
@@ -33,7 +33,7 @@
   padding: 48px 48px 32px;
 }
 
-/* ── Blurred section background — transitions with active slide ── */
+/* ── Blurred section background ── */
 .hl-bg {
   position: absolute;
   inset: 0;
@@ -45,35 +45,36 @@
   transition: background-image 0.5s ease-in-out;
 }
 
-/* ── Track — all slides in one horizontal row ── */
+/* ── Track — horizontal slide row, centered via margin ── */
 .hl-track {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   transition: transform 0.5s ease-in-out;
   position: relative;
   z-index: 1;
-  padding-left: 20%;
+  gap: 24px;
+  /* Center first slide: offset by (100% - slideWidth) / 2 */
+  margin-left: calc((100% - 38%) / 2);
 }
 
-/* ── Each slide — wider to span between arrows ── */
+/* ── Each slide ── */
 .hl-slide {
-  flex: 0 0 58%;
-  padding: 0 12px;
+  flex: 0 0 38%;
   box-sizing: border-box;
   position: relative;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+}
+
+.hl-slide.active {
+  opacity: 1;
 }
 
 /* ── Slide image ── */
 .hl-slide-img {
   width: 100%;
-  aspect-ratio: 650 / 290;
+  aspect-ratio: 546 / 250;
   overflow: hidden;
-  opacity: 0.6;
-  transition: opacity 0.4s ease;
-}
-
-.hl-slide.active .hl-slide-img {
-  opacity: 1;
 }
 
 .hl-slide-img img,
@@ -84,9 +85,9 @@
   display: block;
 }
 
-/* ── Card content — fades in/out smoothly during slide transitions ── */
+/* ── Card content — only visible on active ── */
 .hl-slide-card {
-  background: rgb(30 30 30 / 85%);
+  background: rgb(40 40 40);
   padding: 20px 24px 24px;
   opacity: 0;
   visibility: hidden;
@@ -115,8 +116,6 @@
   line-height: 1.5;
   color: rgb(200 200 200);
   margin: 0 0 16px;
-
-  /* Clamp long text to 3 lines */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -168,18 +167,16 @@
 
 /* stylelint-enable no-descending-specificity */
 
-/* ── Navigation arrows — positioned to frame the center card ── */
+/* ── Navigation arrows — in the gap between active and adjacent slides ── */
 .hl-nav {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Width = slide + gaps on each side for arrow placement */
+  width: calc(38% + 24px + 100px);
   display: flex;
   justify-content: space-between;
-
-  /* Match the card edges: 20% padding-left + 58% card = arrows at ~20% and ~78% */
-  padding: 0 calc(50% - 340px);
   pointer-events: none;
   z-index: 3;
 }
@@ -189,13 +186,13 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 1.5px solid rgb(255 255 255 / 40%);
-  background: transparent;
+  border: 1px solid rgb(71 71 71);
+  background: rgb(0 0 0 / 50%);
   cursor: pointer;
   position: relative;
   padding: 0;
   margin: 0;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
   outline: none;
 }
 
@@ -248,7 +245,8 @@
   }
 
   .hl-track {
-    padding-left: 5%;
+    gap: 16px;
+    margin-left: calc((100% - 80%) / 2);
   }
 
   .hl-slide {
@@ -261,7 +259,7 @@
   }
 
   .hl-nav {
-    padding: 0 8px;
+    width: calc(80% + 16px + 80px);
   }
 }
 
@@ -272,15 +270,16 @@
   }
 
   .hl-track {
-    padding-left: 12%;
+    gap: 20px;
+    margin-left: calc((100% - 55%) / 2);
   }
 
   .hl-slide {
-    flex: 0 0 65%;
+    flex: 0 0 55%;
   }
 
   .hl-nav {
-    padding: 0 calc(50% - 300px);
+    width: calc(55% + 20px + 80px);
   }
 }
 
@@ -294,4 +293,11 @@
     padding: 60px 64px 32px;
   }
 
+  .hl-track {
+    gap: 50px;
+  }
+
+  .hl-nav {
+    width: calc(38% + 50px + 100px);
+  }
 }
